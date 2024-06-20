@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors");
 const jadwalMakanRoutes = require("./routes/jadwalMakan.route");
 const jadwalVitaminRoutes = require("./routes/jadwalVitamin.route");
 const jadwalAktifitasRoutes = require("./routes/jadwalAktifitas.route");
@@ -10,6 +11,7 @@ const { authentificateToken } = require("./middlewares/auth");
 const API_KEY = '5a8109e0575d4a13ae6a222fbae07410';
 const app = express();
 
+app.use(cors()); // Add this line to enable CORS
 app.use(express.json());
 
 app.use("/jadwalmakans", jadwalMakanRoutes);
@@ -29,6 +31,8 @@ app.get('/api/tips-for-cat-and-dog-care', async (req, res) => {
       console.error(error);
       res.status(500).json({ message: 'Error fetching data from NewsAPI' });
     }
-  });
+});
 
-app.listen(3000);
+app.listen(8080, () => {
+    console.log('Server is running on port 8080');
+});
