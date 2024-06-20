@@ -1,5 +1,5 @@
-const { auth } = require('../configs/firebase');
-const prisma = require('../configs/prismaClient');
+const { auth } = require("../configs/firebase");
+const prisma = require("../configs/prismaClient");
 
 const authentificateToken = async (req, res, next) => {
   try {
@@ -11,8 +11,8 @@ const authentificateToken = async (req, res, next) => {
       const decodedToken = await auth.verifyIdToken(token);
 
       // console.log(decodedToken);
-      
-      const user = await prisma.user.findUnique({
+
+      let user = await prisma.user.findUnique({
         where: {
           userUID: decodedToken.uid,
         },
@@ -20,10 +20,9 @@ const authentificateToken = async (req, res, next) => {
 
       // If the user does not exist, create a new user
       if (!user) {
-        await prisma.user.create({
+        user = await prisma.user.create({
           data: {
             userUID: decodedToken.uid,
-
           },
         });
       }

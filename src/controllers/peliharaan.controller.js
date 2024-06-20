@@ -72,6 +72,7 @@ const createPeliharaan = async (req, res) => {
     createdPeliharaan.umur = calculateAge(createdPeliharaan.tanggalLahir);
     res.status(201).json(createdPeliharaan);
   } catch (error) {
+    console.log(error)
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };
