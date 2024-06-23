@@ -8,13 +8,18 @@ const {
   deleteById,
 } = require("../models/jadwalAktifitas.model");
 
-// Controller function to get all jadwal makanan
 const getAllJadwalAktifitas = async (req, res) => {
   try {
-    const jadwalAktifitas = await get();
+    const { peliharaanId } = req.query; // Mengambil nilai dari query parameter peliharaanId
+    let jadwalAktifitas;
+    if (peliharaanId) {
+      jadwalAktifitas = await get(parseInt(peliharaanId)); // Memanggil fungsi get dengan parameter peliharaanId
+    } else {
+      jadwalAktifitas = await get(); // Memanggil fungsi get tanpa parameter
+    }
     res.json(jadwalAktifitas);
   } catch (error) {
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 };
 

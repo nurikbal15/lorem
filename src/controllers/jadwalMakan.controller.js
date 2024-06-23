@@ -11,7 +11,13 @@ const {
 // Controller function to get all jadwal makanan
 const getAllJadwalMakan = async (req, res) => {
   try {
-    const jadwalMakan = await get();
+    const { peliharaanId } = req.query; // Mengambil nilai dari query parameter peliharaanId
+    let jadwalMakan;
+    if (peliharaanId) {
+      jadwalMakan = await get(parseInt(peliharaanId)); // Memanggil fungsi get dengan parameter peliharaanId
+    } else {
+      jadwalMakan = await get(); // Memanggil fungsi get tanpa parameter
+    }
     res.json(jadwalMakan);
   } catch (error) {
     res.status(500).json({ error: 'Internal Server Error' });

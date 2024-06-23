@@ -8,10 +8,15 @@ const {
   deleteById,
 } = require('../models/jadwalVitamin.model');
 
-// Controller function to get all jadwal makanan
 const getAllJadwalVitamin = async (req, res) => {
   try {
-    const jadwalVitamin = await get();
+    const { peliharaanId } = req.query; // Mengambil nilai dari query parameter peliharaanId
+    let jadwalVitamin;
+    if (peliharaanId) {
+      jadwalVitamin = await get(parseInt(peliharaanId)); // Memanggil fungsi get dengan parameter peliharaanId
+    } else {
+      jadwalVitamin = await get(); // Memanggil fungsi get tanpa parameter
+    }
     res.json(jadwalVitamin);
   } catch (error) {
     res.status(500).json({ error: 'Internal Server Error' });

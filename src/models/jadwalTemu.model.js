@@ -1,9 +1,16 @@
 const prisma = require("../configs/prismaClient");
 
-// Function to retrieve all jadwal makanan from the database
-const get = async () => {
+const get = async (peliharaanId) => {
   try {
-    return await prisma.jadwalTemu.findMany();
+    if (peliharaanId) {
+      return await prisma.jadwalTemu.findMany({
+        where: {
+          peliharaanId: peliharaanId,
+        },
+      });
+    } else {
+      return await prisma.jadwalTemu.findMany();
+    }
   } catch (error) {
     console.log(error);
   }

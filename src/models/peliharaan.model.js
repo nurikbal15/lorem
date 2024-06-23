@@ -1,9 +1,17 @@
 const prisma = require("../configs/prismaClient");
 
-// Function to retrieve all peliharaan from the database
-const get = async () => {
+// Function to retrieve all peliharaan from the database, optionally filtered by userId
+const get = async (userId) => {
   try {
-    return await prisma.peliharaan.findMany();
+    if (userId) {
+      return await prisma.peliharaan.findMany({
+        where: {
+          userId,
+        },
+      });
+    } else {
+      return await prisma.peliharaan.findMany();
+    }
   } catch (error) {
     console.log(error);
   }

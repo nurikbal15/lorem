@@ -5,15 +5,24 @@ const { get, getById, create, updateById, patchById, deleteById, findByNameAndUs
 const { uploadImage, deleteImage } = require('../utils/uploadImage'); // Import fungsi uploadImage dan deleteImage
 const { calculateAge } = require('../utils/dateHelper'); // Import dateHelper
 
-// Controller function to get all peliharaan
+// Controller function to get all peliharaan for a specific user
 const getAllPeliharaan = async (req, res) => {
+  const { userId } = req.query; // Ambil userId dari query parameter
+
   try {
-    let peliharaan = await get();
+    let peliharaan;
+    if (userId) {
+      peliharaan = await get(userId); // Memanggil fungsi get dengan userId sebagai parameter
+    } else {
+      peliharaan = await get(); // Memanggil fungsi get tanpa parameter untuk mengambil semua peliharaan
+    }
+
     // Menghitung umur untuk setiap peliharaan
     peliharaan = peliharaan.map(p => ({
       ...p,
       umur: calculateAge(p.tanggalLahir) // Menggunakan fungsi calculateAge untuk menghitung umur
     }));
+
     res.json(peliharaan);
   } catch (error) {
     res.status(500).json({ error: 'Internal Server Error' });
